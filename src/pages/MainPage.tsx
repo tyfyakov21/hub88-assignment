@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import request from "graphql-request";
+import { css } from "@emotion/css";
 import { useState } from "react";
-import { GET_COUNTRIES } from "../queries";
-import { Table } from "./Table";
+import { BounceLoader } from "react-spinners";
+import { Table } from "../components/Table";
+import { useCountries } from "../hooks";
 
 export type Country = {
   name: string;
@@ -13,18 +13,8 @@ export const MainPage = () => {
   const [inputValue, setInputValue] = useState<string | undefined>();
   const [filterValue, setFilterValue] = useState<string | undefined>();
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["countries", filterValue],
-    queryFn: async () =>
-      request(`https://countries.trevorblades.com/`, GET_COUNTRIES(), {
-        filter: inputValue ?? "",
-      }),
-    retry: 3,
-  });
-
-  if (isLoading) {
-    return <></>;
-  }
+  const { data, isLoading } = useCountries(filterValue);
+  console.log(`DATA ${JSON.stringify(data)}`);
 
   const countries = data?.countries as Country[];
 
@@ -36,14 +26,21 @@ export const MainPage = () => {
     setFilterValue(inputValue);
   };
 
+  const renderComponent = () => {
+    if (isLoading) {
+      return (
+        <BounceLoader color="#000000" className={styles.loadingContainer} />
+      );
+    } else if (data?.countries.length === 0) {
+      return <>No countries matching</>;
+    } else {
+      return <Table data={countries} />;
+    }
+  };
+
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+    <div className={styles.container}>
+      <div className={styles.headerContainer}>
         <input
           type="text"
           id="country_code"
@@ -53,7 +50,29 @@ export const MainPage = () => {
         />
         <button onClick={handleFilterClick}>Filter</button>
       </div>
-      <Table data={countries} />
+      {renderComponent()}
     </div>
   );
+};
+
+const styles = {
+  container: css`
+    display: flex;
+    flex-direction: column;
+    width: "100%";
+    height: "100%";
+  `,
+  headerContainer: css`
+    margin-top: 20px;
+    display: "flex";
+    justify-content: "center";
+    align-self: center;
+  `,
+  loadingContainer: css`
+    display: "flex";
+    justify-content: "center";
+    align-self: center;
+    width: "100%";
+    height: "100%";
+  `,
 };

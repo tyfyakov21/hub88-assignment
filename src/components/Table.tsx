@@ -1,17 +1,18 @@
+import { css } from "@emotion/css";
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Country } from "./MainPage";
+import { Country } from "../pages/MainPage";
 
 const columnHelper = createColumnHelper<Country>();
 
 const columns = [
   columnHelper.accessor((row) => row.name, {
     id: "countryName",
-    cell: (info) => <i>{info.getValue()}</i>,
+    cell: (info) => info.getValue(),
     header: () => "Country Name",
   }),
   columnHelper.accessor("code", {
@@ -28,12 +29,12 @@ export const Table = ({ data }: { data: Country[] }) => {
   });
 
   return (
-    <table>
+    <table className={styles.container}>
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <th key={header.id} className={styles.headerCell}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
@@ -49,7 +50,7 @@ export const Table = ({ data }: { data: Country[] }) => {
         {table.getRowModel().rows.map((row) => (
           <tr key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
+              <td key={cell.id} className={styles.cell}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}
@@ -58,4 +59,22 @@ export const Table = ({ data }: { data: Country[] }) => {
       </tbody>
     </table>
   );
+};
+
+const styles = {
+  container: css`
+    width: "100%";
+    height: "100%";
+    margin: 20px;
+    border: 1px solid lightgrey;
+  `,
+  headerCell: css`
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    padding: 2px 4px;
+  `,
+  cell: css`
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+  `,
 };
