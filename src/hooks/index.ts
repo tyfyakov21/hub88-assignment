@@ -9,7 +9,7 @@ export const useCountries = (filter?: string) => {
     queryKey: ["countries", filter],
     queryFn: async () =>
       request(BASE_URL, GET_COUNTRIES(), {
-        filter: filter ?? "",
+        filter: filter?.toUpperCase() ?? "",
       }),
     retry: 3,
   });

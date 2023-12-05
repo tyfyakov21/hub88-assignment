@@ -30,7 +30,7 @@ export const Table = ({ data }: { data: Country[] }) => {
 
   return (
     <table className={styles.container} data-testid="main_page_table">
-      <thead>
+      <thead data-testid="table_head">
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
