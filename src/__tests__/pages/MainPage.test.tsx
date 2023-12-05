@@ -46,4 +46,20 @@ describe(`MainPage`, () => {
     expect(screen.getByText("Estonia")).toBeInTheDocument();
     expect(screen.queryByText("Latvia")).not.toBeInTheDocument();
   }, 70000);
+
+  it(`should show spinner while loading data`, async () => {
+    jest.mock("@tanstack/react-query", () => ({
+      useQuery: jest
+        .fn()
+        .mockReturnValue({ data: {}, isLoading: true, error: {} }),
+    }));
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MainPage />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByTestId("main_page_table")).toBeInTheDocument();
+  });
 });

@@ -263,6 +263,20 @@ describe(`useCountries`, () => {
     { code: "ZW", name: "Zimbabwe" },
   ];
 
+  it(`should return isLoading as true during the fetch`, () => {
+    jest.mock("@tanstack/react-query", () => ({
+      useQuery: jest
+        .fn()
+        .mockReturnValue({ data: {}, isLoading: true, error: {} }),
+    }));
+
+    const { result } = renderHook(() => useCountries(), {
+      wrapper,
+    });
+
+    expect(result.current.isLoading).toEqual(true);
+  });
+
   it(`should return list of all countries if no filter passed`, async () => {
     const { result } = renderHook(() => useCountries(), { wrapper });
 

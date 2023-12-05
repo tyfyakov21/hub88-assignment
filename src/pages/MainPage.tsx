@@ -24,7 +24,11 @@ export const MainPage = () => {
   const renderComponent = () => {
     if (isLoading) {
       return (
-        <BounceLoader color="#000000" className={styles.loadingContainer} />
+        <BounceLoader
+          color="#000000"
+          className={styles.loadingContainer}
+          data-testid="loader"
+        />
       );
     } else if (data?.countries.length === 0) {
       return <div className={styles.emptyView}>No countries matching</div>;
