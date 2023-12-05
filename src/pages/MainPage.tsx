@@ -14,7 +14,6 @@ export const MainPage = () => {
   const [filterValue, setFilterValue] = useState<string | undefined>();
 
   const { data, isLoading } = useCountries(filterValue);
-  console.log(`DATA ${JSON.stringify(data)}`);
 
   const countries = data?.countries as Country[];
 
@@ -40,15 +39,18 @@ export const MainPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.headerContainer}>
+      <div className={styles.headerContainer} data-testid="main_page_header">
         <input
           type="text"
           id="country_code"
           placeholder="Country code"
           onChange={handleInputChange}
           defaultValue={inputValue}
+          data-testid="filter_input"
         />
-        <button onClick={handleFilterClick}>Filter</button>
+        <button onClick={handleFilterClick} data-testid="filter_buton">
+          Filter
+        </button>
       </div>
       {renderComponent()}
     </div>

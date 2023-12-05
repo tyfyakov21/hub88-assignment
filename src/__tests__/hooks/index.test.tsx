@@ -282,27 +282,15 @@ describe(`useCountries`, () => {
     });
   });
 
-  // it(`should return empty array if no countries matching filter`, async () => {
-  //   const countryCodeFilter = "TY";
-  //   const { result } = renderHook(() => useCountries(countryCodeFilter), {
-  //     wrapper,
-  //   });
+  it(`should return empty array if no countries matching filter`, async () => {
+    const countryCodeFilter = "TY";
+    const { result } = renderHook(() => useCountries(countryCodeFilter), {
+      wrapper,
+    });
 
-  //   // await waitFor(() => expect(result.current.isSuccess).toBe(true));
-  //   expect(result.current.data).toEqual({
-  //     countries: [],
-  //   });
-  // });
-
-  // it(`should do 3 reties on request failure`, () => {
-  //   jest.mock("@tanstack/react-query", () => ({
-  //     useQuery: jest.fn().mockReturnValue({
-  //       data: {},
-  //       isLoading: false,
-  //       error: {},
-  //     }),
-  //   }));
-
-  //   expect();
-  // });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual({
+      countries: [],
+    });
+  });
 });

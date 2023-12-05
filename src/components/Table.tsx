@@ -29,7 +29,7 @@ export const Table = ({ data }: { data: Country[] }) => {
   });
 
   return (
-    <table className={styles.container}>
+    <table className={styles.container} data-testid="main_page_table">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
@@ -46,9 +46,9 @@ export const Table = ({ data }: { data: Country[] }) => {
           </tr>
         ))}
       </thead>
-      <tbody>
+      <tbody data-testid="table_body">
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
+          <tr key={row.id} data-testid={`table_row_${row.id}`}>
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id} className={styles.cell}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
