@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import { useState } from "react";
+import { ReactComponent as CrossIcon } from "../assets/shape.svg";
 
 interface Props {
   inputValue?: string;
@@ -21,14 +22,28 @@ export const Header = (props: Props) => {
 
   return (
     <div className={styles.headerContainer} data-testid="main_page_header">
-      <input
-        type="text"
-        id="country_code"
-        placeholder="Country code"
-        onChange={handleInputChange}
-        defaultValue={inputValue}
-        data-testid="filter_input"
-      />
+      <div className={styles.inputContainer}>
+        <input
+          type="text"
+          id="country_code"
+          placeholder="Country code"
+          data-testid="filter_input"
+          onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleFilterClick();
+            }
+          }}
+          value={inputValue}
+        />
+        <button
+          onClick={() => {
+            setInputValue("");
+          }}
+        >
+          <CrossIcon />
+        </button>
+      </div>
       <button
         onClick={handleFilterClick}
         data-testid="filter_buton"
@@ -42,12 +57,35 @@ export const Header = (props: Props) => {
 
 const styles = {
   headerContainer: css`
+    display: flex;
+    flex-direction: row;
     margin-top: 20px;
-    display: "flex";
-    justify-content: "center";
     align-self: center;
   `,
   filterButton: css`
     margin-left: 10px;
+    height: 25px;
+    margin-top: 6px;
+  `,
+  inputContainer: css`
+    position: relative;
+    display: flex;
+    flex-direction: row;
+
+    & input {
+      width: 70%;
+      height: 30px;
+      padding-right: 60px;
+      display: flex;
+    }
+
+    & button {
+      position: absolute;
+      right: 3px;
+      border: 0px;
+      background-color: white;
+      display: flex;
+      align-self: center;
+    }
   `,
 };
